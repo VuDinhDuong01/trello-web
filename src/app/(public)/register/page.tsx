@@ -1,7 +1,8 @@
-import { FormRegister } from "./_component/FormRegister"
 
-const RegisterPage=()=>{
-    return <FormRegister />
-}
+import { FormRegisterVeri } from "./_component/formRegister";
 
-export default RegisterPage
+ const RegisterPage = () => {
+  return <FormRegisterVeri />;
+};
+
+export default RegisterPage;
