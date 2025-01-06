@@ -13,7 +13,7 @@ type MenuItem = Required<MenuProps>["items"][number];
 const items: MenuItem[] = [
   {
     label: "Các không gian làm việc",
-    key: "mail",
+    key: "mail1",
     icon: <MailOutlined />,
   },
   {
@@ -29,12 +29,12 @@ const items: MenuItem[] = [
   },
   {
     label: "Đã đánh dấu sao",
-    key: "SubMenu",
+    key: "SubMenu1",
     icon: <SettingOutlined />,
   },
   {
     label: "Mẫu",
-    key: "SubMenu",
+    key: "SubMenu11",
     icon: <SettingOutlined />,
   },
   {
@@ -59,6 +59,10 @@ const MenuTrello: React.FC = () => {
         selectedKeys={[current]}
         mode="horizontal"
         items={items}
+        style={{
+          height:"70px", 
+          alignItems:"center"
+        }}
       />
     </div>
   );
