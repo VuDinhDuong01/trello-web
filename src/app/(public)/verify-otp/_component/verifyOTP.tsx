@@ -11,6 +11,7 @@ import Link from 'next/link';
 
 const FormVerifyToken = () => {
  const [otp, setOtp] = useState<string>("");
+ 
  return (
    <div
      style={{

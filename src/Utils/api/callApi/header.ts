@@ -3,8 +3,6 @@ import { Method } from "@/constant/method";
 import { headers } from "../axios-client";
 import { Register, VerifyToken } from "@/types/auth.types";
 
-
-
 export const URL = {
   Auth: {
     verifyEmail: (data: Pick<Register,"email">) => ({

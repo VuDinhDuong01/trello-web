@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Form, FormProps, Input, Space } from "antd";
 import React from "react";
 import { images } from "../../public";
@@ -5,11 +7,51 @@ import Image from "next/image";
 import Link from "next/link";
 import { Routes } from "@/constant/Routes";
 import { usePathname } from "next/navigation";
+import { login, verifyEmail } from "@/Utils/api/callApi/user";
+import { useMutation } from "@tanstack/react-query";
+import { Register } from "@/types/auth.types";
+import { useRouter } from "next/router";
 
 const Auth = () => {
+  //  const queryClient = useQueryClient();
+  const verifyEmailMutation = useMutation({
+    mutationFn: (body: Pick<Register, "email">) => verifyEmail(body),
+    onSuccess: (data) => {
+      console.log(data);
+      // Invalidate and refetch
+      // queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  });
+
+  const loginMutation = useMutation({
+    mutationFn: (body: Omit<Register, "username">) => login(body),
+    onSuccess: (data) => {
+      console.log(data);
+      // Invalidate and refetch
+      // queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  });
+  const router = useRouter();
   const pathname = usePathname();
-  const onFinish: FormProps["onFinish"] = (values) => {
-    console.log("Success:", values);
+  const onFinish: FormProps["onFinish"] = async (values) => {
+    switch (pathname) {
+      case Routes.VERIFY_EMAIL:
+        try {
+          const response = await verifyEmailMutation.mutateAsync(values);
+          router.push({
+            pathname: Routes.VERIFY_TOKEN,
+            search: response?.data?.email,
+          });
+        } catch (error) {
+          console.log(error);
+        }
+        break;
+      case Routes.REGISTER:
+        break;
+      case Routes.LOGIN:
+        await loginMutation.mutateAsync(values);
+        break;
+    }
   };
   return (
     <div
@@ -64,7 +106,6 @@ const Auth = () => {
           {pathname !== Routes.REGISTER && (
             <Form.Item
               name="email"
-             
               rules={[{ required: true, message: "Please input your email!" }]}
             >
               <Input

@@ -1,3 +1,4 @@
+import ConfigReactQuery from "@/Utils/config-react-query";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
@@ -25,7 +26,9 @@ export default function RootLayout({
           margin: "0",
         }}
       >
-        <AntdRegistry> {children}</AntdRegistry>
+        <AntdRegistry>
+          <ConfigReactQuery>{children}</ConfigReactQuery>
+        </AntdRegistry>
       </body>
     </html>
   );

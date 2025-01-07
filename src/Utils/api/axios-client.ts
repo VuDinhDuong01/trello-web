@@ -61,7 +61,7 @@ export const callApi = async ({
             url,
             method,
             baseURL: checkEnvironment
-                ? process.env.EXT_PUBLIC_URL_BE_SERVER
+                ? process.env.NEXT_PUBLIC_URL_BE_SERVER
                 : process.env.NEXT_PUBLIC_URL_NEXT_SERVER,
             data,
             headers,

@@ -2,6 +2,7 @@
 import { FormRegisterVeri } from "./_component/formRegister";
 
  const RegisterPage = () => {
+  
   return <FormRegisterVeri />;
 };
 
