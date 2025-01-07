@@ -1,3 +1,4 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import axios from "axios";
@@ -27,6 +28,15 @@ export const headers = {
   }),
 } as const
 
+
+class validateError extends Error {
+    status: number
+    
+    constructor({status, message}:{status: number, message: string } ){
+        super(message)
+        this.status = status;
+    }
+}
 axios.interceptors.request.use(
     function (config) {
         // Do something before request is sent
@@ -69,6 +79,9 @@ export const callApi = async ({
         });
         return response?.data;
     } catch (err: any) {
-        console.log(err);
+       throw new validateError({
+        status:err.response.status, 
+        message: err.response.message
+       })
     }
 };
