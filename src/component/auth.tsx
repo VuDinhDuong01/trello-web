@@ -11,11 +11,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { login, verifyEmail } from "@/Utils/api/callApi/user";
 import { useMutation } from "@tanstack/react-query";
 import { Register } from "@/types/auth.types";
-import { useSelector } from "react-redux";
-
+import { useSelector } from "react-redux"
 const Auth = () => {
   const info = useSelector((state: any) => state?.user?.value);
-  console.log("user:", info);
+
+  
   //  const queryClient = useQueryClient();
   const verifyEmailMutation = useMutation({
     mutationFn: (body: Pick<Register, "email">) => verifyEmail(body),
@@ -43,7 +43,9 @@ const Auth = () => {
       case Routes.VERIFY_EMAIL:
         try {
           const response = await verifyEmailMutation.mutateAsync(values);
-          router.push(Routes.VERIFY_TOKEN);
+         console.log("response:", response?.data)
+         
+          // router.push(`/verify-token?${queryString}`);
         } catch (error: any) {
           notification.error({
             message: error.message,
@@ -121,8 +123,7 @@ const Auth = () => {
               style={{ textAlign: "left", width: "90%" }}
               name="email"
               rules={[
-                { required: true, message: "Please input your email!" },
-                {},
+                { required: true, message: "Please input your email!" }
               ]}
             >
               <Input
@@ -172,6 +173,7 @@ const Auth = () => {
           )}
           <Form.Item label={null} style={{ width: "100%" }}>
             <Button
+            loading={verifyEmailMutation.isPending}
               htmlType="submit"
               style={{
                 width: "90%",
