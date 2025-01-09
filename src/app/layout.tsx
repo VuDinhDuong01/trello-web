@@ -1,4 +1,5 @@
-import ConfigReactQuery from "@/Utils/config-react-query";
+import StoreProvider from "@/lib/redux/store-provider";
+import ConfigReactQuery from "@/lib/react-query/config-react-query";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
@@ -27,7 +28,9 @@ export default function RootLayout({
         }}
       >
         <AntdRegistry>
-          <ConfigReactQuery>{children}</ConfigReactQuery>
+          <StoreProvider>
+            <ConfigReactQuery >{children}</ConfigReactQuery>
+          </StoreProvider>
         </AntdRegistry>
       </body>
     </html>

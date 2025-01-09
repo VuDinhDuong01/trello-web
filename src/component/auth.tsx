@@ -11,8 +11,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { login, verifyEmail } from "@/Utils/api/callApi/user";
 import { useMutation } from "@tanstack/react-query";
 import { Register } from "@/types/auth.types";
+import { useSelector } from "react-redux";
 
 const Auth = () => {
+  const info = useSelector((state: any) => state?.user?.value);
+  console.log("user:", info);
   //  const queryClient = useQueryClient();
   const verifyEmailMutation = useMutation({
     mutationFn: (body: Pick<Register, "email">) => verifyEmail(body),
