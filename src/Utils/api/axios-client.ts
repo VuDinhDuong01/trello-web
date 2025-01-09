@@ -79,9 +79,10 @@ export const callApi = async ({
         });
         return response?.data;
     } catch (err: any) {
+
        throw new validateError({
-        status:err.response.status, 
-        message: err.response.message
+        status:err.response.data.error.code, 
+        message: err.response.data.error.message
        })
     }
 };

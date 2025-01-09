@@ -1,16 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Button, Form, FormProps, Input, Space } from "antd";
+import { Button, Form, FormProps, Input, Space, notification } from "antd";
 import React from "react";
 import { images } from "../../public";
 import Image from "next/image";
 import Link from "next/link";
 import { Routes } from "@/constant/Routes";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { login, verifyEmail } from "@/Utils/api/callApi/user";
 import { useMutation } from "@tanstack/react-query";
 import { Register } from "@/types/auth.types";
-import { useRouter } from "next/router";
 
 const Auth = () => {
   //  const queryClient = useQueryClient();
@@ -31,19 +31,23 @@ const Auth = () => {
       // queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
   });
+
   const router = useRouter();
   const pathname = usePathname();
+
   const onFinish: FormProps["onFinish"] = async (values) => {
     switch (pathname) {
       case Routes.VERIFY_EMAIL:
         try {
           const response = await verifyEmailMutation.mutateAsync(values);
-          router.push({
-            pathname: Routes.VERIFY_TOKEN,
-            search: response?.data?.email,
+          router.push(Routes.VERIFY_TOKEN);
+        } catch (error: any) {
+          notification.error({
+            message: error.message,
+            duration: 2,
           });
-        } catch (error) {
-          console.log(error);
+          console.log("error:", error.message);
+          // console.log("error:" , error?.data);
         }
         break;
       case Routes.REGISTER:
@@ -53,6 +57,7 @@ const Auth = () => {
         break;
     }
   };
+
   return (
     <div
       style={{
@@ -97,22 +102,30 @@ const Auth = () => {
         </Space>
         <Form
           name="basic"
-          style={{ marginTop: "30px" }}
+          style={{
+            marginTop: "30px",
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          // onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           {pathname !== Routes.REGISTER && (
             <Form.Item
+              style={{ textAlign: "left", width: "90%" }}
               name="email"
-              rules={[{ required: true, message: "Please input your email!" }]}
+              rules={[
+                { required: true, message: "Please input your email!" },
+                {},
+              ]}
             >
               <Input
                 style={{
-                  width: "90%",
+                  // width: "90%",
                   height: "40px",
-                  textAlign: "left",
                 }}
                 placeholder="Nhập email của bạn"
               />
@@ -120,6 +133,7 @@ const Auth = () => {
           )}
           {pathname === Routes.REGISTER && (
             <Form.Item
+              style={{ textAlign: "left", width: "90%" }}
               name="username"
               rules={[
                 { required: true, message: "Please input your username!" },
@@ -127,7 +141,7 @@ const Auth = () => {
             >
               <Input
                 style={{
-                  width: "90%",
+                  // width: "90%",
                   height: "40px",
                   textAlign: "left",
                 }}
@@ -138,6 +152,7 @@ const Auth = () => {
           {(pathname === Routes.LOGIN || pathname === Routes.REGISTER) && (
             <Form.Item
               name="password"
+              style={{ textAlign: "left", width: "90%" }}
               rules={[
                 { required: true, message: "Please input your password!" },
               ]}
@@ -145,14 +160,14 @@ const Auth = () => {
               <Input
                 placeholder="Nhập password của bạn"
                 style={{
-                  width: "90%",
+                  // width: "90%",
                   height: "40px",
                   textAlign: "left",
                 }}
               />
             </Form.Item>
           )}
-          <Form.Item label={null}>
+          <Form.Item label={null} style={{ width: "100%" }}>
             <Button
               htmlType="submit"
               style={{
