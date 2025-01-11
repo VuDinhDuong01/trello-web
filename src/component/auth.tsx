@@ -8,57 +8,68 @@ import Image from "next/image";
 import Link from "next/link";
 import { Routes } from "@/constant/Routes";
 import { usePathname, useRouter } from "next/navigation";
-import { login, verifyEmail } from "@/Utils/api/callApi/user";
+import { login, register, verifyEmail } from "@/Utils/api/callApi/user";
 import { useMutation } from "@tanstack/react-query";
 import { Register } from "@/types/auth.types";
-import { useSelector } from "react-redux"
-const Auth = () => {
-  const info = useSelector((state: any) => state?.user?.value);
+import { useContextApp } from "@/hook/useContext";
 
-  
-  //  const queryClient = useQueryClient();
+const Auth = () => {
+
   const verifyEmailMutation = useMutation({
     mutationFn: (body: Pick<Register, "email">) => verifyEmail(body),
-    onSuccess: (data) => {
-      console.log(data);
-      // Invalidate and refetch
-      // queryClient.invalidateQueries({ queryKey: ["todos"] });
-    },
   });
 
   const loginMutation = useMutation({
     mutationFn: (body: Omit<Register, "username">) => login(body),
-    onSuccess: (data) => {
-      console.log(data);
-      // Invalidate and refetch
-      // queryClient.invalidateQueries({ queryKey: ["todos"] });
-    },
   });
+
+  const registerMutation = useMutation({
+    mutationFn: (body: Register) => register(body)
+  })
 
   const router = useRouter();
   const pathname = usePathname();
-
+  const { setEmailContext, emailContext } = useContextApp()
   const onFinish: FormProps["onFinish"] = async (values) => {
     switch (pathname) {
       case Routes.VERIFY_EMAIL:
         try {
           const response = await verifyEmailMutation.mutateAsync(values);
-         console.log("response:", response?.data)
-         
-          // router.push(`/verify-token?${queryString}`);
+          setEmailContext(response?.data?.email)
+          router.push(Routes.VERIFY_TOKEN)
         } catch (error: any) {
           notification.error({
             message: error.message,
             duration: 2,
           });
-          console.log("error:", error.message);
-          // console.log("error:" , error?.data);
         }
         break;
       case Routes.REGISTER:
+        try {
+          const payload = Object.assign({
+            email: emailContext
+          }, values)
+
+          await registerMutation.mutateAsync(payload);
+          router.push(Routes.LOGIN)
+        } catch (error: any) {
+          notification.error({
+            message: error.message,
+            duration: 2,
+          });
+
+        }
         break;
       case Routes.LOGIN:
-        await loginMutation.mutateAsync(values);
+        try {
+          await loginMutation.mutateAsync(values);
+          router.push(Routes.HOME)
+        } catch (error: any) {
+          notification.error({
+            message: error.message,
+            duration: 2,
+          });
+        }
         break;
     }
   };
@@ -101,7 +112,7 @@ const Auth = () => {
             fontWeight: 600,
           }}
         >
-          {pathname === Routes.VERIFY_EMAIL
+          {pathname === Routes.REGISTER
             ? "Đăng ký để tiếp tục"
             : "Đăng nhập để tiếp tục"}
         </Space>
@@ -153,7 +164,7 @@ const Auth = () => {
               />
             </Form.Item>
           )}
-          {(pathname === Routes.LOGIN || pathname === Routes.REGISTER) && (
+          {(pathname === Routes.LOGIN || pathname === Routes.REGISTER || loginMutation.isPending) && (
             <Form.Item
               name="password"
               style={{ textAlign: "left", width: "90%" }}
@@ -173,7 +184,7 @@ const Auth = () => {
           )}
           <Form.Item label={null} style={{ width: "100%" }}>
             <Button
-            loading={verifyEmailMutation.isPending}
+              loading={verifyEmailMutation.isPending || registerMutation.isPending}
               htmlType="submit"
               style={{
                 width: "90%",

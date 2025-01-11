@@ -3,6 +3,7 @@ import ConfigReactQuery from "@/lib/react-query/config-react-query";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
+import { ProviderContext } from "@/hook/useContext";
 
 const roboto = Roboto({
   weight: "400",
@@ -28,9 +29,11 @@ export default function RootLayout({
         }}
       >
         <AntdRegistry>
-          <StoreProvider>
-            <ConfigReactQuery >{children}</ConfigReactQuery>
-          </StoreProvider>
+          <ProviderContext>
+            <StoreProvider>
+              <ConfigReactQuery >{children}</ConfigReactQuery>
+            </StoreProvider>
+          </ProviderContext>
         </AntdRegistry>
       </body>
     </html>

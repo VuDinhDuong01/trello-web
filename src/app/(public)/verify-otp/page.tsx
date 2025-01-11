@@ -1,15 +1,67 @@
 "use client";
 
-import { Button, Space } from "antd";
+import { Button, notification, Space } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
 import OTPInput from "react-otp-input";
 import { images } from "../../../../public";
-import Link from "next/link";
 import { Routes } from "@/constant/Routes";
+import { useContextApp } from "@/hook/useContext";
+import { VerifyToken } from "@/types/auth.types";
+import { sendToken, verifyToken } from "@/Utils/api/callApi/user";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { countDownApp } from "@/hook/useCountDown";
 
+const TIME_COUNT_DOWN = 70
 const VerifyTokenPage = () => {
-    const [otp, setOtp] = useState("");
+    const [otp, setOtp] = useState<string>("");
+    const router = useRouter()
+    const { emailContext, setEmailContext } = useContextApp()
+
+    const verifyTokenMutation = useMutation({
+        mutationFn: (body: VerifyToken) => verifyToken(body),
+    });
+    const countDownLocalStorage = localStorage.getItem("count_down")
+    const [countDown, setCountDown] = useState<number>(countDownLocalStorage === "0" ? TIME_COUNT_DOWN : Number(countDownLocalStorage))
+    const timesCountDown = countDownApp(countDown, setCountDown)
+
+    const sendTokenMutation = useMutation({
+        mutationFn: (body: VerifyToken) => sendToken(body),
+    });
+
+    const handleVerifyToken = async () => {
+        try {
+            const payload = {
+                email: emailContext,
+                token: otp
+            }
+            const response = await verifyTokenMutation.mutateAsync(payload)
+            setEmailContext(response?.data?.email)
+            router.push(Routes.REGISTER)
+        } catch (error: unknown) {
+            console.log(error)
+        }
+    }
+
+    const handleSendToken = async () => {
+        setCountDown(countDownLocalStorage === "0" ? TIME_COUNT_DOWN : Number(countDownLocalStorage))
+        try {
+            const payload = {
+                email: emailContext,
+                token: otp
+            }
+
+            await sendTokenMutation.mutateAsync(payload)
+
+            notification.success({
+                message: "Mã xác thực đã được gửi về email của bạn",
+                duration: 3
+            })
+        } catch (error: unknown) {
+            console.log(error)
+        }
+    }
     return (
         <div
             style={{
@@ -52,7 +104,6 @@ const VerifyTokenPage = () => {
                         alignItems: "center",
                         fontWeight: 600,
                         marginBottom: "20px",
-
                     }}
                 >
                     Chúng tôi đã gửi cho bạn một mã qua email
@@ -72,11 +123,13 @@ const VerifyTokenPage = () => {
                         fontSize: "15px",
                         textAlign: "left",
                         width: "80%",
-                        marginTop:"20px",
-                        color:"rgb(60,60,146)"
+                        marginTop: "20px",
+                        color: "rgb(60,60,146)"
                     }}
                 >
-                    duong6lophot@gmail.com
+                    {
+                        emailContext
+                    }
                 </Space>
                 <OTPInput
                     value={otp}
@@ -97,23 +150,36 @@ const VerifyTokenPage = () => {
                     renderInput={(props) => <input {...props} />}
                 />
                 <Button
-                    htmlType="submit"
+
                     style={{
                         width: "90%",
                         fontSize: "17px",
                         fontWeight: 600,
                         height: "40px",
-                        background: "#0C66E4",
+                        background: `${timesCountDown === "00:00" ? "#aacaf6" : "#0463e7"}`,
                         color: "#fff",
                     }}
+                    onClick={handleVerifyToken}
+                    disabled={timesCountDown === "00:00"}
                 >
-                    Xác minh
+                    Xác minh {timesCountDown}
                 </Button>
-                <Space style={{ margin: "20px 40px" }}>
-                    <Link href={Routes.LOGIN} style={{ fontSize: "15px" }}>
-                        Bạn đã có tài khoản Atlassian? Đăng nhập
-                    </Link>
-                </Space>
+
+                <Button
+                    style={{
+                        width: "90%",
+                        fontSize: "17px",
+                        fontWeight: 600,
+                        height: "40px",
+                        background: `${timesCountDown !== "00:00" ? "#aacaf6" : "#0463e7"}`,
+                        color: "#fff",
+                        margin: "20px 0"
+                    }}
+                    onClick={handleSendToken}
+                    disabled={sendTokenMutation.isPending || timesCountDown !== "00:00"}
+                >
+                    Gửi lại mã xác thực
+                </Button>
             </div>
         </div>
     );

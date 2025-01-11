@@ -21,13 +21,19 @@ export const URL = {
     register: (data: Register) => ({
       data,
       headers: headers.baseHeader(),
-      url: "/api/v1/login",
+      url: "/api/v1/register",
       method: Method.POST,
     }),
     login: (data: Omit<Register,"username">) => ({
       data,
       headers: headers.baseHeader(),
       url: "/api/v1/register",
+      method: Method.POST,
+    }),
+    sendToken: (data: Pick<Register,"email">) => ({
+      data,
+      headers: headers.baseHeader(),
+      url: "/api/v1/send-token",
       method: Method.POST,
     }),
   },

@@ -25,3 +25,9 @@ export const login = async(data:Omit<Register,"username">)=>{
         ...URL.Auth.login(data)
     })
 }
+
+export const sendToken= async(data:Pick<Register,"email">)=>{
+    return  callApi({
+        ...URL.Auth.sendToken(data)
+    })
+}
