@@ -27,7 +27,7 @@ export const URL = {
     login: (data: Omit<Register,"username">) => ({
       data,
       headers: headers.baseHeader(),
-      url: "/api/v1/register",
+      url: "/api/v1/login",
       method: Method.POST,
     }),
     sendToken: (data: Pick<Register,"email">) => ({

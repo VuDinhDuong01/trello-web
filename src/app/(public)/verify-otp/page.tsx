@@ -2,7 +2,7 @@
 
 import { Button, notification, Space } from "antd";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import OTPInput from "react-otp-input";
 import { images } from "../../../../public";
 import { Routes } from "@/constant/Routes";
@@ -10,21 +10,31 @@ import { useContextApp } from "@/hook/useContext";
 import { VerifyToken } from "@/types/auth.types";
 import { sendToken, verifyToken } from "@/Utils/api/callApi/user";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { countDownApp } from "@/hook/useCountDown";
 
-const TIME_COUNT_DOWN = 70
+const TIME_COUNT_DOWN = 300
+const CLOSE_COUNT_DOWN = ["00:00", "0", null];
+
 const VerifyTokenPage = () => {
+    const pathname = usePathname()
+    const countDownLocalStorage = localStorage.getItem("count_down")
+
     const [otp, setOtp] = useState<string>("");
+    const [countDown, setCountDown] = useState<number>(CLOSE_COUNT_DOWN.includes(countDownLocalStorage as string) ? TIME_COUNT_DOWN : Number(countDownLocalStorage))
+
     const router = useRouter()
+
     const { emailContext, setEmailContext } = useContextApp()
+
+    const timesCountDown = countDownApp(countDown, setCountDown)
 
     const verifyTokenMutation = useMutation({
         mutationFn: (body: VerifyToken) => verifyToken(body),
+        onSuccess: () => {
+            localStorage.removeItem("count_down")
+        }
     });
-    const countDownLocalStorage = localStorage.getItem("count_down")
-    const [countDown, setCountDown] = useState<number>(countDownLocalStorage === "0" ? TIME_COUNT_DOWN : Number(countDownLocalStorage))
-    const timesCountDown = countDownApp(countDown, setCountDown)
 
     const sendTokenMutation = useMutation({
         mutationFn: (body: VerifyToken) => sendToken(body),
@@ -45,15 +55,13 @@ const VerifyTokenPage = () => {
     }
 
     const handleSendToken = async () => {
-        setCountDown(countDownLocalStorage === "0" ? TIME_COUNT_DOWN : Number(countDownLocalStorage))
+        setCountDown(CLOSE_COUNT_DOWN.includes(countDownLocalStorage as string) ? TIME_COUNT_DOWN : Number(countDownLocalStorage))
         try {
             const payload = {
                 email: emailContext,
                 token: otp
             }
-
             await sendTokenMutation.mutateAsync(payload)
-
             notification.success({
                 message: "Mã xác thực đã được gửi về email của bạn",
                 duration: 3
@@ -62,6 +70,13 @@ const VerifyTokenPage = () => {
             console.log(error)
         }
     }
+
+    useEffect(() => {
+        if (verifyTokenMutation.isSuccess || CLOSE_COUNT_DOWN.includes(countDownLocalStorage as string) || pathname !== Routes.VERIFY_TOKEN) {
+            localStorage.removeItem("count_down")
+        }
+    }, [countDownLocalStorage, verifyTokenMutation.isSuccess, pathname])
+
     return (
         <div
             style={{
@@ -156,11 +171,11 @@ const VerifyTokenPage = () => {
                         fontSize: "17px",
                         fontWeight: 600,
                         height: "40px",
-                        background: `${timesCountDown === "00:00" ? "#aacaf6" : "#0463e7"}`,
+                        background: `${CLOSE_COUNT_DOWN.includes(countDownLocalStorage as string) ? "#aacaf6" : "#0463e7"}`,
                         color: "#fff",
                     }}
                     onClick={handleVerifyToken}
-                    disabled={timesCountDown === "00:00"}
+                    disabled={CLOSE_COUNT_DOWN.includes(countDownLocalStorage as string)}
                 >
                     Xác minh {timesCountDown}
                 </Button>
@@ -171,12 +186,12 @@ const VerifyTokenPage = () => {
                         fontSize: "17px",
                         fontWeight: 600,
                         height: "40px",
-                        background: `${timesCountDown !== "00:00" ? "#aacaf6" : "#0463e7"}`,
+                        background: `${!CLOSE_COUNT_DOWN.includes(countDownLocalStorage as string) ? "#aacaf6" : "#0463e7"}`,
                         color: "#fff",
                         margin: "20px 0"
                     }}
                     onClick={handleSendToken}
-                    disabled={sendTokenMutation.isPending || timesCountDown !== "00:00"}
+                    disabled={sendTokenMutation.isPending || !CLOSE_COUNT_DOWN.includes(countDownLocalStorage as string)}
                 >
                     Gửi lại mã xác thực
                 </Button>

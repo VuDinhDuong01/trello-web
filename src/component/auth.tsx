@@ -57,13 +57,12 @@ const Auth = () => {
             message: error.message,
             duration: 2,
           });
-
         }
         break;
       case Routes.LOGIN:
         try {
           await loginMutation.mutateAsync(values);
-          router.push(Routes.HOME)
+          router.push(Routes.BOARDS)
         } catch (error: any) {
           notification.error({
             message: error.message,
@@ -134,7 +133,11 @@ const Auth = () => {
               style={{ textAlign: "left", width: "90%" }}
               name="email"
               rules={[
-                { required: true, message: "Please input your email!" }
+                { required: true, message: "Trường nay không được bỏ trống!" },
+                {
+                  pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  message:"Bạn phải nhập đúng định dạng email!"
+                }
               ]}
             >
               <Input
@@ -172,7 +175,7 @@ const Auth = () => {
                 { required: true, message: "Please input your password!" },
               ]}
             >
-              <Input
+              <Input.Password
                 placeholder="Nhập password của bạn"
                 style={{
                   // width: "90%",
@@ -184,7 +187,7 @@ const Auth = () => {
           )}
           <Form.Item label={null} style={{ width: "100%" }}>
             <Button
-              loading={verifyEmailMutation.isPending || registerMutation.isPending}
+              loading={verifyEmailMutation.isPending || registerMutation.isPending || loginMutation.isPending}
               htmlType="submit"
               style={{
                 width: "90%",
