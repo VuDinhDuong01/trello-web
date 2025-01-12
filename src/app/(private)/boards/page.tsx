@@ -10,6 +10,8 @@ import { SearchOutlined, UploadOutlined, UserOutlined, VideoCameraOutlined } fro
 
 import { Notification } from '@/component/notification';
 import { AvatarUser } from '@/component/avatar';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/lib/redux/store';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -26,11 +28,15 @@ const Boards = () => {
     setWidthSearch(500)
   }
 
+  const user = useSelector((state:RootState)=>state.user)
+  console.log("user", user)
+
   return (
-    <div>
+    <div style={{height :"100vh !important",width:"100%"}}>
       <div style={{
         padding: "0 30px",
         display: "flex",
+        
         alignItems: "center",
         justifyContent: "space-between"
       }}>
@@ -51,8 +57,8 @@ const Boards = () => {
         </div>
       </div>
       <Layout style={{
-        height: "calc( 100vh - 50px )"
-      }}>
+          height:" calc( 100vh - 70px)"
+        }}>
         <Sider
           // breakpoint="lg"
           // collapsedWidth="0"
@@ -66,7 +72,7 @@ const Boards = () => {
           <div className="demo-logo-vertical" />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} items={items} />
         </Sider>
-        <Layout>
+        <Layout >
           <Header style={{ padding: 0, background: "red" }} >
             adfadf
           </Header>

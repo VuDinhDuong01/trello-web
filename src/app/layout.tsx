@@ -29,11 +29,13 @@ export default function RootLayout({
         }}
       >
         <AntdRegistry>
-          <ProviderContext>
-            <StoreProvider>
+          <StoreProvider>
+            <ProviderContext>
+
               <ConfigReactQuery >{children}</ConfigReactQuery>
-            </StoreProvider>
-          </ProviderContext>
+
+            </ProviderContext>
+          </StoreProvider>
         </AntdRegistry>
       </body>
     </html>

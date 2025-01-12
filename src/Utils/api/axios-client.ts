@@ -2,8 +2,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import axios from "axios";
-import { getTokenToLS } from "../local-storage";
+import { clearLS, getTokenToLS, setTokenToLS } from "../local-storage";
 import { Method } from "@/constant/method";
+
+
 
 interface ApiPropType {
     url: string;
@@ -15,24 +17,24 @@ interface ApiPropType {
 }
 
 export const headers = {
-  baseHeader: () => ({
-    "Content-Type": "application/json",
-  }),
-  headerMultipart: () => ({
-    "Content-Type": "multipart/form-data",
-    Authorization: `Bearer ${getTokenToLS("access_token")}`,
-  }),
-  headerApplication: () => ({
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${getTokenToLS("access_token")}`,
-  }),
+    baseHeader: () => ({
+        "Content-Type": "application/json",
+    }),
+    headerMultipart: () => ({
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${getTokenToLS("access_token")}`,
+    }),
+    headerApplication: () => ({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getTokenToLS("access_token")}`,
+    }),
 } as const
 
 
 class validateError extends Error {
     status: number
-    
-    constructor({status, message}:{status: number, message: string } ){
+
+    constructor({ status, message }: { status: number, message: string }) {
         super(message)
         this.status = status;
     }
@@ -50,6 +52,14 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     function (response) {
+        const url = response?.config?.url
+        if (url === "/api/v1/login") {
+            console.log("response axios123", response)
+            setTokenToLS("access_token", response?.data?.data?.token?.accessToken)
+            setTokenToLS("refresh_token", response?.data?.data?.token?.refreshToken)
+        } else if (url === "/api/v1/logout") {
+            clearLS()
+        }
         return response;
     },
     function (error) {
@@ -80,9 +90,9 @@ export const callApi = async ({
         return response?.data;
     } catch (err: any) {
 
-       throw new validateError({
-        status:err.response.data.error.code, 
-        message: err.response.data.error.message
-       })
+        throw new validateError({
+            status: err.response.data.error.code,
+            message: err.response.data.error.message
+        })
     }
 };

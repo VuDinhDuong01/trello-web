@@ -14,3 +14,7 @@ export const setTokenToLS = (
 export const getTokenToLS = (key: (typeof keySetLS)[keyof typeof keySetLS]) => {
   return localStorage.getItem(key);
 };
+
+export const clearLS=()=>{
+  localStorage.clear()
+}

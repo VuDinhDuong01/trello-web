@@ -11,3 +11,15 @@ export interface Register{
     password: string ,
     username: string 
 }
+
+export type IUser = {
+    email : string 
+    avatar: string 
+    role ?: string[]
+    username: string 
+    createdAt?: number
+    isActive?: boolean
+    isDelete?: boolean
+    updatedAt?: number
+    updatedBy?: string 
+} | null

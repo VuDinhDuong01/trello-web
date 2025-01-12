@@ -1,15 +1,17 @@
+import { IUser } from '@/types/auth.types';
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = { value: 6 };
+const initialState: IUser = null
 
 const counterSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    increment: (state) => { state.value += 1; },
-    decrement: (state) => { state.value -= 1; },
+    user: (state, actions) => { 
+       return state = actions.payload
+     },
   },
 });
 
-export const { increment, decrement } = counterSlice.actions;
+export const { user } = counterSlice.actions;
 export default counterSlice.reducer;

@@ -12,7 +12,8 @@ import { login, register, verifyEmail } from "@/Utils/api/callApi/user";
 import { useMutation } from "@tanstack/react-query";
 import { Register } from "@/types/auth.types";
 import { useContextApp } from "@/hook/useContext";
-
+import { useAppDispatch } from "@/lib/redux/hook";
+import { user } from "@/lib/redux/features/user/userSlice"
 const Auth = () => {
 
   const verifyEmailMutation = useMutation({
@@ -30,6 +31,7 @@ const Auth = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { setEmailContext, emailContext } = useContextApp()
+  const dispatch = useAppDispatch()
   const onFinish: FormProps["onFinish"] = async (values) => {
     switch (pathname) {
       case Routes.VERIFY_EMAIL:
@@ -61,7 +63,8 @@ const Auth = () => {
         break;
       case Routes.LOGIN:
         try {
-          await loginMutation.mutateAsync(values);
+          const response = await loginMutation.mutateAsync(values);
+          dispatch(user(response?.data.record))
           router.push(Routes.BOARDS)
         } catch (error: any) {
           notification.error({
@@ -136,7 +139,7 @@ const Auth = () => {
                 { required: true, message: "Trường nay không được bỏ trống!" },
                 {
                   pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                  message:"Bạn phải nhập đúng định dạng email!"
+                  message: "Bạn phải nhập đúng định dạng email!"
                 }
               ]}
             >
