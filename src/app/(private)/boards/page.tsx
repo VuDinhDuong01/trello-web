@@ -13,7 +13,9 @@ import { AvatarUser } from '@/component/avatar';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/lib/redux/store';
 import { Option } from 'antd/es/mentions';
-import "./boards.module.scss"
+import "./boards.scss"
+import { Column } from '@/component/column';
+
 const { Header, Content, Footer, Sider } = Layout;
 
 const Boards = () => {
@@ -167,15 +169,15 @@ const Boards = () => {
                 borderRadius: "black",
               }}
             >
-              content
+              <Column />
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
+          {/* <Footer style={{ textAlign: 'center' }}>
             Ant Design ©{new Date().getFullYear()} Created by Ant UED
-          </Footer>
+          </Footer> */}
         </Layout>
       </Layout>
-      <Modal title="Chia sẻ bảng" open={isModalOpen} footer={null} style={{ maxWidth: "700px" }}>
+      <Modal title="Chia sẻ bảng" open={isModalOpen} onClose={handleCancel} onCancel={handleCancel} footer={null} style={{ maxWidth: "700px" }}>
         <Form style={{
           display: "flex",
           alignItems: "center",
@@ -198,13 +200,12 @@ const Boards = () => {
           </Select>
           <Button type='primary' style={{ color: "white", fontWeight: 600 }}>Chia sẻ</Button>
         </Form>
-        <div style={{
-             overflow: "hidden",
-             overflowY: "auto",
-             padding: "10px",
-            
-             maxHeight:"400px"
-        }} className='custom-scrollbar'>
+        <div
+        style={{
+          overflow:"hidden",
+          overflowY:"auto"
+        }}
+          className="customScrollbar">
           <div style={{ display: "flex", alignItems: "center" }}>
             <Button><ApiOutlined /></Button>
             <div style={{ display: "flex", flexDirection: "column", fontSize: "13px", marginLeft: "15px" }}>
