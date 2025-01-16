@@ -16,7 +16,7 @@ import { Option } from 'antd/es/mentions';
 import "./boards.scss"
 import { Column } from '@/component/column';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 const Boards = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -167,9 +167,29 @@ const Boards = () => {
                 minHeight: 360,
                 background: "blue",
                 borderRadius: "black",
+                display:"flex", alignItems:"center",
+                maxWidth:"200vh",
+                overflow:"hidden",
+                overflowX:"scroll"
               }}
             >
               <Column />
+              <Column />
+              <Column />
+              <Column />
+              <Column />
+              <Column />
+              <Column />
+              <Column />
+              <Column />
+              <Column />
+              <Column />
+              <Column />
+              <Column />
+              <Column />
+              <Column />
+              <Column />
+    
             </div>
           </Content>
           {/* <Footer style={{ textAlign: 'center' }}>
