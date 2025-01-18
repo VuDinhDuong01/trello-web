@@ -1,4 +1,4 @@
-import { Avatar, Button, Popover, Space } from 'antd'
+import { Avatar, Popover, Space } from 'antd'
 import React from 'react'
 
 export const AvatarUser = () => {

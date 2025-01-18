@@ -25,6 +25,7 @@
     "react": "18",
     "react-dom": "18",
     "react-otp-input": "^3.1.1",
+    "react-quill": "^2.0.0",
     "react-redux": "^9.2.0",
     "trello-web": "file:"
   },

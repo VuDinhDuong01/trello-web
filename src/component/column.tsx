@@ -24,25 +24,27 @@ export const Column = () => {
                 borderTopRightRadius: "10px",
                 borderTopLeftRadius: "10px",
                 marginBottom: "10px"
-                // position:"fixed",
-                // top:0
             }}>Dev - Doing</Space>
             <div style={{
-                width: "100%",
+                width: "270px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
+                justifyContent: "flex-start",
                 flexDirection: "column",
-                overflow: "hidden",
-                overflowY: "scroll"
-            }} className='customScrollbar'>
+                overflowY: "auto",
+                maxHeight:"70vh"
+            }}  className='customScrollbar'>
                 <Card />
+                <Card />
+                <Card />
+                <Card />  <Card />
                 <Card />
                 <Card />
                 <Card /> 
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", background: "red", width: "100%", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px" }}> <PlusOutlined style={{
+            <div style={{ display: "flex", alignItems: "center", background: "red", width: "100%", borderBottomLeftRadius: "10px", borderBottomRightRadius: "10px" }}> 
+                <PlusOutlined style={{
                 fontSize: "15px",
                 padding: "15px 10px"
             }} /><Space style={{ fontSize: "15px", fontWeight: 600 }}>Thêm mới</Space></div>

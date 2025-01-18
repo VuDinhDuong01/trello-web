@@ -4,7 +4,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import { ProviderContext } from "@/hook/useContext";
-
+import 'react-quill/dist/quill.snow.css';
 const roboto = Roboto({
   weight: "400",
   subsets: ["latin"],

@@ -168,7 +168,6 @@ const Boards = () => {
                 background: "blue",
                 borderRadius: "black",
                 display:"flex", alignItems:"center",
-                maxWidth:"200vh",
                 overflow:"hidden",
                 overflowX:"scroll"
               }}

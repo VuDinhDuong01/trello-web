@@ -1,19 +1,29 @@
 
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import { images } from '../../public'
 import { Avatar, Space } from 'antd'
 import { AlignLeftOutlined, ApiOutlined, CommentOutlined, EyeOutlined } from '@ant-design/icons'
+import { DetailCard } from './detail-card'
 
 export const Card = () => {
+  const [open, setOpen] = useState(false);
+
+  const handleShowDetailCard=()=>{
+    setOpen(true);
+  }
+  const handleCancel=()=> setOpen(false)
   return (
-    <div style={{
-      width: "96%",
+    <div onClick={handleShowDetailCard} style={{
+      width: "100%",
       cursor: "pointer",
       marginBottom: "10px",
-      // padding: "5px 0",
+      display:"flex",
+      alignItems:"center",
+      justifyContent:"center",
+      flexDirection:"column",
       borderRadius: "8px",
-      background: "blue",
+      background: "#F56A00",
     }}>
       <Image alt='' src={images.trelloUI} style={{
         width: "100%",
@@ -80,6 +90,7 @@ export const Card = () => {
 
           </div>
       </div>
+      <DetailCard open={open} handleCancel={handleCancel} />
     </div>
   )
 }
