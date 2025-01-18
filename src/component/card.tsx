@@ -7,13 +7,16 @@ import { AlignLeftOutlined, ApiOutlined, CommentOutlined, EyeOutlined } from '@a
 import { DetailCard } from './detail-card'
 
 export const Card = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const handleShowDetailCard=()=>{
     setOpen(true);
   }
-  const handleCancel=()=> setOpen(false)
+  const handleCancel=()=> {
+    setOpen(false)
+  }
   return (
+    <>
     <div onClick={handleShowDetailCard} style={{
       width: "100%",
       cursor: "pointer",
@@ -90,7 +93,10 @@ export const Card = () => {
 
           </div>
       </div>
-      <DetailCard open={open} handleCancel={handleCancel} />
+      
     </div>
+    {
+      open && <DetailCard open={open} handleCancel={handleCancel} />
+    }</>
   )
 }

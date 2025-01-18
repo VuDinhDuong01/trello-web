@@ -10,8 +10,7 @@ import { AlignCenterOutlined, AntDesignOutlined, ApiOutlined, DownOutlined, Elli
 
 import { Notification } from '@/component/notification';
 import { AvatarUser } from '@/component/avatar';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/lib/redux/store';
+
 import { Option } from 'antd/es/mentions';
 import "./boards.scss"
 import { Column } from '@/component/column';
@@ -32,17 +31,9 @@ const Boards = () => {
     setWidthSearch(500)
   }
 
-  const user = useSelector((state: RootState) => state.user)
-
-
   const showModalShare = () => {
     setIsModalOpen(true);
   };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -167,36 +158,21 @@ const Boards = () => {
                 minHeight: 360,
                 background: "blue",
                 borderRadius: "black",
-                display:"flex", alignItems:"center",
-                overflow:"hidden",
-                overflowX:"scroll"
+                display: "flex",
+                alignItems: "center",
+                overflow: "hidden",
+                overflowX: "scroll"
               }}
             >
               <Column />
-              <Column />
-              <Column />
-              <Column />
-              <Column />
-              <Column />
-              <Column />
-              <Column />
-              <Column />
-              <Column />
-              <Column />
-              <Column />
-              <Column />
-              <Column />
-              <Column />
-              <Column />
-    
+
+
+
             </div>
           </Content>
-          {/* <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©{new Date().getFullYear()} Created by Ant UED
-          </Footer> */}
         </Layout>
       </Layout>
-      <Modal title="Chia sẻ bảng" open={isModalOpen} onClose={handleCancel} onCancel={handleCancel} footer={null} style={{ maxWidth: "700px" }}>
+      <Modal title="Chia sẻ bảng" open={isModalOpen} onCancel={handleCancel} footer={null} style={{ maxWidth: "700px" }}>
         <Form style={{
           display: "flex",
           alignItems: "center",
@@ -220,10 +196,10 @@ const Boards = () => {
           <Button type='primary' style={{ color: "white", fontWeight: 600 }}>Chia sẻ</Button>
         </Form>
         <div
-        style={{
-          overflow:"hidden",
-          overflowY:"auto"
-        }}
+          style={{
+            overflow: "hidden",
+            overflowY: "auto"
+          }}
           className="customScrollbar">
           <div style={{ display: "flex", alignItems: "center" }}>
             <Button><ApiOutlined /></Button>

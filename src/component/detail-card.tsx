@@ -2,13 +2,16 @@ import { Avatar, Button, Input, Modal, Space } from 'antd'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import { images } from '../../public'
+import "./detail-card.scss"
 
-
-import { ApiOutlined, AppstoreAddOutlined, ArrowRightOutlined, BorderRightOutlined, CheckOutlined, CheckSquareOutlined, ClockCircleOutlined, ClusterOutlined, CopyOutlined, DisconnectOutlined, EllipsisOutlined, ExpandAltOutlined, EyeOutlined, FrownOutlined, FundOutlined, PicCenterOutlined, PlusOutlined, ShareAltOutlined, TagsOutlined, UnorderedListOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons'
+import { ApiOutlined, AppstoreAddOutlined, ArrowRightOutlined, 
+    BorderRightOutlined, CheckOutlined, CheckSquareOutlined, 
+    ClockCircleOutlined, ClusterOutlined, CopyOutlined, DisconnectOutlined,
+    EllipsisOutlined, ExpandAltOutlined, EyeOutlined, FrownOutlined, FundOutlined, PicCenterOutlined,
+     PlusOutlined, ShareAltOutlined, TagsOutlined, UnorderedListOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons'
 import { ReactQuillComponent } from './react-quill'
 interface ICardProps {
     open: boolean,
-    // handleOk:()=>void
     handleCancel: () => void
 }
 export const DetailCard = ({ open, handleCancel }: ICardProps) => {
@@ -18,23 +21,18 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
     const handleFocusInput = () => {
         setIsShowInputComment(true)
     }
-
+   
     return (
         <Modal
             open={open}
             onCancel={handleCancel}
-            onClose={handleCancel}
             footer={null}
             width={770}
-            style={{
-                borderRadius: "10px",
-                // padding:"0px",
-                // margin:"0px"
-            }}
-            bodyStyle={{
-                padding: "0",
-                margin: "0" // Loại bỏ padding mặc định
-            }}
+           bodyStyle={{
+            borderRadius:"10px",
+            overflow:"hidden"
+           }}
+           
         >
             <div style={{
                 width: "100%",
@@ -47,7 +45,8 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                 <Image alt='' src={images.trelloUI} width={300} height={163} />
             </div>
             <div style={{
-                background: "#F1F2F4"
+                background: "#F1F2F4",
+                padding:"0 15px"
             }}>
 
                 <div style={{
@@ -105,7 +104,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                         <div style={{
                             display: "flex",
                             alignItems: "center",
-                            justifyContent: "space-between", margin: "20px"
+                            justifyContent: "space-between", margin: "20px 0"
                         }}>
                             <div style={{
                                 display: "flex",
@@ -130,7 +129,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                         <div style={{
                             display: "flex",
                             alignItems: "center",
-                            justifyContent: "space-between", margin: "20px"
+                            justifyContent: "space-between", margin: "20px 0"
                         }}>
                             <div style={{
                                 display: "flex",
@@ -321,7 +320,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                         paddingLeft: "15px"
                     }}>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
                             fontSize: "15px",
                             fontWeight: 600,
                             textAlign: "left",
@@ -331,7 +330,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             marginBottom: "15px"
                         }}> <UserAddOutlined />Tham gia</Button>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
                             fontSize: "15px",
                             fontWeight: 600,
                             textAlign: "left",
@@ -341,7 +340,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             alignItems: "center"
                         }}> <UserOutlined />Thành viên</Button>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
                             fontSize: "15px",
                             fontWeight: 600,
                             textAlign: "left",
@@ -350,7 +349,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             alignItems: "center", marginBottom: "15px"
                         }}> <TagsOutlined />Nhãn</Button>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
                             fontSize: "15px",
                             fontWeight: 600,
                             textAlign: "left",
@@ -359,7 +358,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             alignItems: "center", marginBottom: "15px"
                         }}> <CheckSquareOutlined />Cần làm việc</Button>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
                             fontSize: "15px",
                             fontWeight: 600,
                             textAlign: "left",
@@ -368,7 +367,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             alignItems: "center", marginBottom: "15px"
                         }}><ClockCircleOutlined />Ngày</Button>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
                             fontSize: "15px",
                             fontWeight: 600,
                             textAlign: "left",
@@ -377,7 +376,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             alignItems: "center", marginBottom: "15px"
                         }}> <ApiOutlined />Đính kèm</Button>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
                             fontSize: "15px",
                             fontWeight: 600,
                             textAlign: "left",
@@ -389,7 +388,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             margin: "10px 0 20px 0"
                         }}>Thêm nút</Space>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
 
                             fontSize: "15px",
                             fontWeight: 600,
@@ -402,7 +401,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             margin: "30px 0 20px 0"
                         }}>Thao tác</Space>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
 
                             fontSize: "15px",
                             fontWeight: 600,
@@ -412,7 +411,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             alignItems: "center", marginBottom: "15px"
                         }}> <ArrowRightOutlined />Di chuyển</Button>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
 
                             fontSize: "15px",
                             fontWeight: 600,
@@ -422,7 +421,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             alignItems: "center", marginBottom: "15px"
                         }}> <CopyOutlined />Sao chép</Button>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
 
                             fontSize: "15px",
                             fontWeight: 600,
@@ -432,7 +431,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             alignItems: "center", marginBottom: "15px"
                         }}> <BorderRightOutlined />Đối xứng</Button>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
 
                             fontSize: "15px",
                             fontWeight: 600,
@@ -442,7 +441,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             alignItems: "center", marginBottom: "15px"
                         }}> <ClusterOutlined />Tạo mẫu</Button>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
 
                             fontSize: "15px",
                             fontWeight: 600,
@@ -452,7 +451,7 @@ export const DetailCard = ({ open, handleCancel }: ICardProps) => {
                             alignItems: "center", marginBottom: "15px"
                         }}> <DisconnectOutlined />Lưu trữ</Button>
                         <Button style={{
-                            width: "90%",
+                            width: "100%",
 
                             fontSize: "15px",
                             fontWeight: 600,
