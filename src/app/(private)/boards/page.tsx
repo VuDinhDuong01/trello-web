@@ -10,7 +10,6 @@ import { AlignCenterOutlined, AntDesignOutlined, ApiOutlined, DownOutlined, Elli
 
 import { Notification } from '@/component/notification';
 import { AvatarUser } from '@/component/avatar';
-
 import { Option } from 'antd/es/mentions';
 import "./boards.scss"
 import { Column } from '@/component/column';
@@ -67,8 +66,6 @@ const Boards = () => {
         height: " calc( 100vh - 70px)"
       }}>
         <Sider
-          // breakpoint="lg"
-          // collapsedWidth="0"
           onBreakpoint={(broken) => {
             console.log(broken);
           }}
@@ -172,7 +169,9 @@ const Boards = () => {
           </Content>
         </Layout>
       </Layout>
-      <Modal title="Chia sẻ bảng" open={isModalOpen} onCancel={handleCancel} footer={null} style={{ maxWidth: "700px" }}>
+      <Modal title="Chia sẻ bảng" open={isModalOpen} onCancel={handleCancel} footer={null} style={{
+        maxWidth: "700px", marginTop: "-50px"
+      }}>
         <Form style={{
           display: "flex",
           alignItems: "center",
@@ -180,7 +179,7 @@ const Boards = () => {
           textAlign: "center",
           width: "100%",
           height: "50px",
-          margin: "20px 0"
+          padding: "20px 10px"
         }}>
           <Input
             placeholder="Nhập địa chi email hoặc tên"

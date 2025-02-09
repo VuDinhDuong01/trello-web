@@ -1,3 +1,4 @@
+"use client"
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Input, Space } from 'antd'
 import React, { useRef, useState } from 'react'
