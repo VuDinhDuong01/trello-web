@@ -25,6 +25,7 @@ export default function RootLayout({
 				className={roboto.className}
 				style={{
 					padding: '0',
+
 					margin: '0',
 				}}
 			>
