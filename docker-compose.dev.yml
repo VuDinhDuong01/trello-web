@@ -1,0 +1,19 @@
+version: '3'
+services:
+  web:
+    build:
+      dockerfile:  Dockerfile.dev
+      context:  .
+    container_name: "web"
+    env_file:
+      - .env.dev
+    image: "web-trello"
+    ports:
+      - "3000:3000"
+    networks:
+      - connect
+
+networks:
+  connect:
+    driver: bridge
+      

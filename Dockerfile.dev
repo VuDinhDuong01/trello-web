@@ -1,14 +1,43 @@
-FROM node:23-alpine3.20
+FROM node:20-alpine as installer
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN  yarn install
+RUN  yarn install --frozen-lockfile
 
-COPY . .
+FROM node:20-alpine as builder
 
+WORKDIR /app
 
-EXPOSE 3001
+COPY  --from=installer /app/node_modules /app/node_modules
 
-CMD [ "npm","run","dev" ]
+RUN cp .env.dev .env
+
+COPY  /src ./src
+
+RUN yarn build
+
+FROM node:20-alpine as runner
+
+WORKDIR /app
+
+# bỏ giám sát bởi nextjs
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# file build
+COPY --from=builder /app/.next ./.next
+
+# folder chứa các file tĩnh
+COPY --from=builder /app/public ./public
+
+COPY --from=builder /app/package.json ./package.json
+
+# khi chạy trên server
+COPY --from=builder /app/node_modules ./node_modules
+
+COPY --from=builder /app/next.config.js ./next.config.mjs
+
+EXPOSE  3000
+
+CMD ["npm", "start"]

@@ -1,20 +1,27 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+'use client'
 const keySetLS = {
-  accessToken: "access_token",
-  refreshToken: "refresh_token",
+	accessToken: 'access_token',
+	refreshToken: 'refresh_token',
+	countDown: 'count_down',
 } as const;
 
-export const setTokenToLS = (
-  key: (typeof keySetLS)[keyof typeof keySetLS],
-  token: string
-) => {
-  return  token && localStorage.setItem(key, token);
-};
+type KeyProp = (typeof keySetLS)[keyof typeof keySetLS];
 
-export const getTokenToLS = (key: (typeof keySetLS)[keyof typeof keySetLS]) => {
-  return localStorage.getItem(key);
+export const localStorageData = {
+	setTokenToLS: (key: KeyProp, token: string) => {
+		if (typeof window === "undefined") return;
+		localStorage.setItem(key, token);
+	},
+	getTokenToLS: (key: KeyProp) => {
+		if (typeof window === "undefined") return null;
+		return localStorage.getItem(key);
+	},
+	clearLS: () => {
+		if (typeof window === "undefined") return;
+		localStorage.clear();
+	},
+	removeItemInLS: (key: KeyProp) => {
+		if (typeof window === "undefined") return;
+		localStorage.removeItem(key);
+	},
 };
-
-export const clearLS=()=>{
-  localStorage.clear()
-}

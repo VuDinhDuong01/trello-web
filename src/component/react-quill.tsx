@@ -29,19 +29,18 @@ export const ReactQuillComponent = ({ valueQuill, setValueQuill }: IQuillProps) 
         "image",
         "code-block",
       ];
-    const handleSave = async() => {
 
-    }
 
     return (
-        <div style={{ width: "100%" }}><ReactQuill formats={formats} modules={modules} theme="snow" value={valueQuill} onChange={setValueQuill} style={{
+        <div style={{ width: "100%" }}>
+        <ReactQuill formats={formats} modules={modules} theme="snow" value={valueQuill} onChange={setValueQuill} style={{
             width: "100%",
             background: "white",
             marginBottom: "10px",
             border: "1px solid #0C66E4",
             borderRadius: "10px"
         }}  />
-            <Button type='primary' onClick={handleSave}>Lưu</Button>
+            <Button type='primary'>Lưu</Button>
         </div>
     )
 }

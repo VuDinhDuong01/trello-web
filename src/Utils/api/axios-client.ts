@@ -1,8 +1,6 @@
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { localStorageData } from '@/Utils/local-storage';
 
 import axios from "axios";
-import { clearLS, getTokenToLS, setTokenToLS } from "../local-storage";
 import { Method } from "@/constant/method";
 
 
@@ -22,11 +20,11 @@ export const headers = {
     }),
     headerMultipart: () => ({
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${getTokenToLS("access_token")}`,
+        Authorization: `Bearer ${localStorageData.getTokenToLS("access_token")}`,
     }),
     headerApplication: () => ({
         "Content-Type": "application/json",
-        Authorization: `Bearer ${getTokenToLS("access_token")}`,
+        Authorization: `Bearer ${localStorageData.getTokenToLS("access_token")}`,
     }),
 } as const
 
@@ -54,11 +52,10 @@ axios.interceptors.response.use(
     function (response) {
         const url = response?.config?.url
         if (url === "/api/v1/login") {
-            console.log("response axios123", response)
-            setTokenToLS("access_token", response?.data?.data?.token?.accessToken)
-            setTokenToLS("refresh_token", response?.data?.data?.token?.refreshToken)
+            localStorageData.setTokenToLS("access_token", response?.data?.data?.token?.accessToken)
+            localStorageData.setTokenToLS("refresh_token", response?.data?.data?.token?.refreshToken)
         } else if (url === "/api/v1/logout") {
-            clearLS()
+            localStorageData.clearLS()
         }
         return response;
     },
