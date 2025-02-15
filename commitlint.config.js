@@ -20,7 +20,7 @@ module.exports = {
 			],
 		],
 		'subject-case': [2, 'always', ['sentence-case']],
-		'type-case': [2, 'always', ['sentence-case']],
+		'type-case': [2, 'always', ['lower-case']],
 		'header-max-length': [2, 'always', 72],
 		'header-min-length': [2, 'always', 0],
 	},
