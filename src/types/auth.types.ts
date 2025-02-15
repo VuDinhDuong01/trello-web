@@ -22,4 +22,4 @@ export type IUser = {
     isDelete?: boolean
     updatedAt?: number
     updatedBy?: string 
-} | null
+} 

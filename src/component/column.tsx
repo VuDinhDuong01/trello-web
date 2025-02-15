@@ -2,10 +2,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Input, Space } from 'antd'
 import React, { useRef, useState } from 'react'
-import { Card } from './card'
+
 import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
 
 import "./column.scss"
+import AddCardOrAddColumn from './add-card-or-column'
 
 const { TextArea } = Input;
 export const Column = () => {
@@ -21,8 +22,8 @@ export const Column = () => {
             }
         }, 0);
     }
-    const handleCancelCard = () => setIsAddCard(false)
 
+    const handleCancelCard = () => setIsAddCard(false)
 
     const handleAddCartToColumn = () => {
         if (valueAddCard !== "") {
@@ -44,7 +45,7 @@ export const Column = () => {
             <Space style={{
                 fontSize: "17px",
                 fontWeight: 600,
-                padding: "10px 6px",
+                padding: "10px",
 
                 width: "100%",
                 borderTopRightRadius: "10px",
@@ -60,12 +61,6 @@ export const Column = () => {
                 overflowY: "auto",
                 maxHeight: "72vh"
             }} className='customScrollbar'>
-
-                <Card />
-                <Card />
-                <Card />
-                <Card />
-                <Card />
                 {
                     isAddCard && <TextArea
                         rows={10}
@@ -74,7 +69,7 @@ export const Column = () => {
                         onChange={(e) => setValueAddCard(e.target.value)}
                         style={{
                             width: "100%",
-                            height: "100px",
+                            height: "40px",
                             resize: "none"
                         }}
                     />
@@ -92,28 +87,11 @@ export const Column = () => {
                 }} onClick={handleAddCard}>
                     <PlusOutlined style={{
                         fontSize: "15px",
-                        padding: "15px 10px"
+                        padding: "10px 0"
                     }} /><Space style={{ fontSize: "15px", fontWeight: 600 }}>Thêm mới</Space>
                 </Button>
             }
-
-            {
-                isAddCard && <div style={{
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                    padding: "10px 0"
-                }}>
-                    <Button type='primary' style={{
-                        margin: "0 10px 0 20px"
-                    }} onClick={handleAddCartToColumn}>Thêm thẻ</Button>
-                    <CloseOutlined style={{
-                        fontSize: "15px",
-                        cursor: "pointer"
-                    }} onClick={handleCancelCard} />
-                </div>
-            }
+            <AddCardOrAddColumn text="Thêm thẻ" isAdd={isAddCard} handleAdd={handleAddCartToColumn} handleCancel={handleCancelCard} />
         </div>
     )
 }

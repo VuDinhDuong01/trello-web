@@ -14,19 +14,28 @@ import { useContextApp } from '@/hook/useContext';
 import { useAppDispatch } from '@/lib/redux/hook';
 import { user } from '@/lib/redux/features/user/userSlice';
 const Auth = () => {
+	const router = useRouter();
 	const verifyEmailMutation = useMutation({
 		mutationFn: (body: Pick<Register, 'email'>) => verifyEmail(body),
+		onSuccess:()=>{
+			router.push(Routes.VERIFY_TOKEN);
+		}
 	});
 
 	const loginMutation = useMutation({
 		mutationFn: (body: Omit<Register, 'username'>) => login(body),
+		onSuccess:()=>{
+			router.push(Routes.BOARDS);
+		}
 	});
 
 	const registerMutation = useMutation({
 		mutationFn: (body: Register) => register(body),
+		onSuccess:()=>{
+			router.push(Routes.LOGIN);
+		}
 	});
 
-	const router = useRouter();
 	const pathname = usePathname();
 	const { setEmailContext, emailContext } = useContextApp();
 	const dispatch = useAppDispatch();
@@ -36,7 +45,7 @@ const Auth = () => {
 				try {
 					const response = await verifyEmailMutation.mutateAsync(values);
 					setEmailContext(response?.data?.email);
-					router.push(Routes.VERIFY_TOKEN);
+					
 				} catch (error: any) {
 					notification.error({
 						message: error.message,
@@ -54,7 +63,7 @@ const Auth = () => {
 					);
 
 					await registerMutation.mutateAsync(payload);
-					router.push(Routes.LOGIN);
+					
 				} catch (error: any) {
 					notification.error({
 						message: error.message,
@@ -66,7 +75,8 @@ const Auth = () => {
 				try {
 					const response = await loginMutation.mutateAsync(values);
 					dispatch(user(response?.data.record));
-					router.push(Routes.BOARDS);
+					
+					
 				} catch (error: any) {
 					notification.error({
 						message: error.message,

@@ -1,8 +1,51 @@
-import { Avatar, Popover, Space } from 'antd'
-import React from 'react'
+"use client"
+
+import { Routes } from '@/constant/Routes';
+import { user } from '@/lib/redux/features/user/userSlice';
+import { useAppDispatch } from '@/lib/redux/hook';
+import { RootState } from '@/lib/redux/store';
+import { IUser } from '@/types/auth.types';
+import { getMe, logout } from '@/Utils/api/callApi/user';
+import { localStorageData } from '@/Utils/local-storage';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Avatar, Button, notification, Popover, Space, message } from 'antd'
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux';
 
 export const AvatarUser = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter()
+  const refresh_token = localStorageData.getTokenToLS("refresh_token") as string
+  const { data } = useQuery({
+    queryKey: ["getMe"],
+    queryFn: () => getMe(),
+  });
 
+  const logoutMutation = useMutation({
+    mutationFn: (body: { refresh_token: string }) => logout(body),
+    onSuccess: () => {
+      router.push(Routes.LOGIN)
+      message.success("logout successfully!")
+      dispatch(user(null))
+    },
+    onError: (error: any) => {
+      notification.error({
+        message: error.message,
+        duration: 2,
+      });
+    }
+  })
+
+  useEffect(() => {
+    dispatch(user(data?.data))
+  }, [data])
+  const userInfo: IUser = useSelector((state: RootState) => state.user)
+
+  const handleLogout = async () => {
+    await logoutMutation.mutateAsync({ refresh_token })
+  }
   const content = (
     <div
       style={{
@@ -28,13 +71,16 @@ export const AvatarUser = () => {
           alignItems: "center",
         }}
       >
-        <Avatar style={{ backgroundColor: '#87d068' }} icon="user" />
+        {
+          userInfo?.avatar ? <Image alt='' src={userInfo?.avatar} width={40} height={40} />
+            : <Avatar style={{ backgroundColor: '#87d068' }} icon="user" size={30} />
+        }
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             margin: 0,
-            padding: 0,
+            paddingLeft: "10px",
             lineHeight: "15px",
           }}
         >
@@ -46,9 +92,9 @@ export const AvatarUser = () => {
               padding: 0,
             }}
           >
-            Ngọc Dương
+            {userInfo?.username}
           </Space>
-          <Space style={{ margin: 0, padding: 0 }}>@ngocduong</Space>
+          <Space style={{ margin: 0, padding: 0 }}>{userInfo?.email}</Space>
         </div>
       </div>
       <Space
@@ -91,6 +137,18 @@ export const AvatarUser = () => {
       >
         Trello
       </Space>
+      <div style={{
+        margin: "10px 0",
+        width: "100%",
+        height: "2px",
+        background: "black"
+      }}></div>
+
+      <Button style={{
+        width: "100%"
+      }} onClick={handleLogout}> Đăng xuất</Button>
+
+
     </div>
   );
   return (

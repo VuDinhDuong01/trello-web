@@ -1,69 +1,92 @@
 "use client"
 import React, { useState } from "react";
 import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined,
+  DownOutlined,
+
+  TeamOutlined,
+
 } from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Menu } from "antd";
 
-type MenuItem = Required<MenuProps>["items"][number];
+import { Avatar, Button, Input, Menu, Space, Tooltip } from "antd";
+import { Header } from "antd/es/layout/layout";
+import { AvatarUser } from "@/component/avatar";
+import Image from "next/image";
+import { images } from "../../../../../public";
+import { Notification } from "@/component/notification";
+import { Search } from "./search";
+import './boards.scss'
 
-const items: MenuItem[] = [
-  {
-    label: "Các không gian làm việc",
-    key: "mail1",
-    icon: <MailOutlined />,
-  },
-  {
-    label: "Các không gian làm việc",
-    key: "mail",
-    icon: <MailOutlined />,
-  },
-  {
-    label: "Gần đây",
-    key: "app",
-    icon: <AppstoreOutlined />,
-    disabled: true,
-  },
-  {
-    label: "Đã đánh dấu sao",
-    key: "SubMenu1",
-    icon: <SettingOutlined />,
-  },
-  {
-    label: "Mẫu",
-    key: "SubMenu11",
-    icon: <SettingOutlined />,
-  },
-  {
-    label: "Tạo mới",
-    key: "SubMenu",
-    icon: <SettingOutlined />,
-  },
-];
 
 const MenuTrello: React.FC = () => {
-  const [current, setCurrent] = useState("mail");
-
-  const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
-    setCurrent(e.key);
-  };
 
   return (
-    <div>
-      <Menu
-        onClick={onClick}
-        selectedKeys={[current]}
-        mode="horizontal"
-        items={items}
-        style={{
-          height:"70px", 
-          alignItems:"center"
-        }}
-      />
+    <div style={{
+      padding: "0 30px",
+      display: "flex",
+      background: "blue",
+      alignItems: "center",
+      justifyContent: "space-between"
+    }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Image alt="" src={images.logoTrello} width={80} height={50} />
+        <Header style={{ padding: "0 20px", background: "blue", display: "flex", alignItems: "center", justifyContent: "space-between" }} >
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Button type="text" style={{
+              margin: "0 20px 0 0",
+              color: "white",
+
+            }}
+              className="custom-btn"
+            >
+              <TeamOutlined />
+              <Space>Các không gian làm việc</Space>
+              <DownOutlined />
+            </Button>
+            <Button style={{
+              margin: "0 20px 0 0",
+              color:"white"
+            }} type="text" className="custom-btn">
+
+              <Space>Gần đây</Space>
+              <DownOutlined />
+            </Button>
+            <Button type="text" style={{
+              margin: "0 20px 0 0",
+              color:"white"
+            }} className="custom-btn">
+              <Space>Đã đánh dấu sao</Space>
+              <DownOutlined />
+            </Button>
+            <Button style={{
+              margin: "0 20px 0 0",
+              color:"white"
+            }} type="text" className="custom-btn">
+              <Space>Mẫu</Space>
+              <DownOutlined />
+            </Button>
+            <Button style={{
+              margin: "0 20px 0 0"
+            }}>
+
+              <Space>Tạo mới</Space>
+
+            </Button>
+          </div>
+
+
+        </Header>
+      </div>
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+
+      }}>
+        <Search />
+        <Notification />
+        <AvatarUser />
+
+      </div>
     </div>
   );
 };
