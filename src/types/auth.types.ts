@@ -13,6 +13,7 @@ export interface Register{
 }
 
 export type IUser = {
+    id: string
     email : string 
     avatar: string 
     role ?: string[]
@@ -22,4 +23,4 @@ export type IUser = {
     isDelete?: boolean
     updatedAt?: number
     updatedBy?: string 
-} 
+}  | null

@@ -3,66 +3,50 @@
 "use client"
 import React, { useState } from 'react'
 import MenuTrello from './_component/menu';
-import Image from 'next/image';
-import { images } from '../../../../public';
 import { Avatar, Button, Form, Input, Layout, Menu, Modal, Select, Space, Tooltip } from 'antd'
-import { AlignCenterOutlined, AntDesignOutlined, ApiOutlined, DownOutlined, EllipsisOutlined, PlusOutlined, SearchOutlined, StarOutlined, SunOutlined, TeamOutlined, UploadOutlined, UsergroupAddOutlined, UserOutlined, VideoCameraOutlined } from "@ant-design/icons"
+import { ApiOutlined } from "@ant-design/icons"
 
-import { Notification } from '@/component/notification';
-import { AvatarUser } from '@/component/avatar';
 import { Option } from 'antd/es/mentions';
 import "./boards.scss"
 import { Column } from '@/component/column';
 import { AddColumnToBoard } from './_component/add-column-to-boards';
 import { HeaderBoard } from './_component/header';
-
-
-const { Content, Sider } = Layout;
+import { SliderComponent } from '@/component/slider';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/lib/redux/store';
+import { IBoard } from '@/types/boardTypes';
+const { Content } = Layout;
 
 const Boards = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const items = [UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].map(
-    (icon, index) => ({
-      key: String(index + 1),
-      icon: React.createElement(icon),
-      label: `nav ${index + 1}`,
-    }),
-  );
-
-
   const showModalShare = () => {
     setIsModalOpen(true);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
+  const boardOver = useSelector((state: RootState) => state.board)
 
   return (
-    <div style={{ height: "100vh !important", width: "100%" }}>
+    <div style={{
+      height: "100vh !important", width: "100%",
+      backgroundImage: `url(${(boardOver as IBoard)?.background})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center"
+
+    }}>
       <MenuTrello />
       <Layout style={{
         height: " calc( 100vh - 70px)"
       }}>
-        <Sider
-          onBreakpoint={(broken) => {
-            console.log(broken);
-          }}
-          onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
-          }}
-        >
-          <div className="demo-logo-vertical" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} items={items} />
-        </Sider>
+        <SliderComponent />
         <Layout >
-
           <HeaderBoard showModalShare={showModalShare} />
           <Content >
             <div
               style={{
                 padding: 24,
-                background: "blue",
+              
                 borderRadius: "black",
                 display: "flex",
                 overflow: "hidden",

@@ -9,7 +9,7 @@ interface IHeaderBoardProps {
 export const HeaderBoard = (props: IHeaderBoardProps) => {
     const { showModalShare } = props
     return (
-        <Header style={{ padding: "0 20px", background: "red", display: "flex", alignItems: "center", justifyContent: "space-between" }} >
+        <Header style={{ padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between", background:"transparent" }} >
             <div style={{ display: "flex", alignItems: "center" }}>
                 <Space style={{
                     color: "white",

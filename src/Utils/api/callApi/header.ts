@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Method } from "@/constant/method";
 import { headers } from "../axios-client";
 import { Register, VerifyToken } from "@/types/auth.types";
-import { url } from "inspector";
+import { IBoard } from "@/types/boardTypes";
+
 
 export const URL = {
   Auth: {
@@ -49,5 +50,19 @@ export const URL = {
       data
     })
 
+  },
+  Boards: {
+    createBoard: (data: IBoard) => ({
+      data,
+      headers: headers.headerApplication(),
+      url: "/api/v1/board",
+      method: Method.POST,
+    }),
+    getAllBoard: (data: any) => ({
+      data,
+      headers: headers.headerApplication(),
+      url: "/api/v1/board/filter",
+      method: Method.POST,
+    }),
   }
 };
